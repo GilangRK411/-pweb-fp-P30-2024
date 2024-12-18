@@ -15,23 +15,45 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      user: JSON.parse(localStorage.getItem('user')) || {},
-      isLoggedIn: !!localStorage.getItem('token'),
+      user: {}, // Objek user untuk menampung data username
+      isLoggedIn: !!localStorage.getItem('token'), // Periksa status login
     };
   },
   methods: {
+    async fetchUserSession() {
+      try {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+          const response = await axios.get('http://localhost:5000/api/session', {
+            headers: { token },
+          });
+          this.user = { username: response.data.username };
+          this.isLoggedIn = true;
+          localStorage.setItem('user', JSON.stringify(this.user)); // Simpan ke localStorage
+        }
+      } catch (error) {
+        console.error('Error fetching session:', error);
+        this.isLoggedIn = false;
+      }
+    },
     logout() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       document.cookie = 'token=; Max-Age=0';
       document.cookie = 'unique_id=; Max-Age=0';
-      this.user = null;
+      this.user = {};
       this.isLoggedIn = false;
       this.$router.push('/');
     },
+  },
+  mounted() {
+    this.fetchUserSession();
   },
 };
 </script>

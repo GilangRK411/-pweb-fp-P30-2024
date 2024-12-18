@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <form @submit.prevent="handleLogin">
+    <form @submit.prevent="handleLogin" class="login-form">
       <div class="form-group">
         <label for="usernameOrEmail">Username or Email:</label>
         <input
@@ -21,7 +21,10 @@
           required
         />
       </div>
-      <button type="submit" :disabled="isLoading">Login</button>
+      <button type="submit" :disabled="isLoading" class="submit-btn">
+        <span v-if="isLoading">Loading...</span>
+        <span v-else>Login</span>
+      </button>
     </form>
 
     <div v-if="errorMessage" class="error-message">
@@ -42,6 +45,12 @@ export default {
       errorMessage: '',
     };
   },
+  mounted() {
+
+    if (localStorage.getItem('token')) {
+      this.$router.push('/user');
+    }
+  },
   methods: {
     async handleLogin() {
       this.isLoading = true;
@@ -52,12 +61,10 @@ export default {
           password: this.password,
         });
 
-        // If login is successful, store the token in localStorage
         if (response.data && response.data.token) {
-          localStorage.setItem('token', response.data.token);  // Store token in localStorage
+          localStorage.setItem('token', response.data.token); 
 
-          // Redirect to /user route after login
-          this.$router.push('/user');
+          window.location.reload();
         }
       } catch (error) {
         this.errorMessage = error.response ? error.response.data.message : 'An error occurred';
@@ -70,18 +77,93 @@ export default {
 </script>
 
 <style scoped>
-/* Add your CSS styling here */
+/* Login container setup */
 .login-container {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.login-form {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 400px;
-  margin: 0 auto;
+  transition: all 0.3s ease;
 }
 
+.login-form:hover {
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Form group styling */
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #2575fc;
+}
+
+/* Submit button styling */
+.submit-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  color: white;
+  background-color: #2575fc;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #6a11cb;
+}
+
+.submit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Error message styling */
 .error-message {
   color: red;
-  margin-top: 1rem;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .login-form {
+    padding: 20px;
+  }
+  .submit-btn {
+    padding: 12px;
+  }
 }
 </style>
