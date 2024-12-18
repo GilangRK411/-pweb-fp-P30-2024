@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import UserSession from '../models/user.usersession.model.js';
+
+dotenv.config();
 
 export async function authenticate(req, res, next) {
   const token = req.headers['authorization']?.split(' ')[1]; 
@@ -9,7 +12,7 @@ export async function authenticate(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, 'qwwqw1212!@!@'); 
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
 
     const session = await UserSession.findOne({
       user_id: decoded.id,
@@ -20,6 +23,10 @@ export async function authenticate(req, res, next) {
     if (!session) {
       return res.status(401).json({ message: 'Invalid token or session expired' });
     }
+    if (new Date() > session.expires_at) {
+      return res.status(401).json({ message: 'Token has expired' });
+    }
+
     req.user = decoded;
     next();
   } catch (error) {

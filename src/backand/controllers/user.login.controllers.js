@@ -1,6 +1,9 @@
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import UserSession from '../models/user.usersession.model.js';
+
+dotenv.config();
 
 export async function login(req, res) {
     const { usernameOrEmail, password } = req.body;
@@ -18,7 +21,7 @@ export async function login(req, res) {
             return res.status(404).json({ message: 'Username/email not found' });
         }
 
-        const isPasswordValid = await user.comparePassword(password);  
+        const isPasswordValid = await user.comparePassword(password);
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Incorrect password' });
@@ -26,14 +29,14 @@ export async function login(req, res) {
 
         const token = jwt.sign(
             { id: user._id, username: user.username, email: user.email, role: user.role },
-            'qwwqw1212!@!@', 
+            process.env.JWT_SECRET, 
             { expiresIn: '1d' }
         );
 
         let session = await UserSession.findOne({ user_id: user._id });
         if (session) {
             session.jwt_token = token;
-            session.expires_at = new Date(Date.now() + 24 * 60 * 60 * 1000);  
+            session.expires_at = new Date(Date.now() + 24 * 60 * 60 * 1000);
             session.login_status = true;
         } else {
             session = new UserSession({
@@ -48,7 +51,8 @@ export async function login(req, res) {
 
         return res.status(200).json({
             message: 'Login successful',
-            token: token
+            token: token,
+            role: user.role 
         });
 
     } catch (error) {
@@ -56,4 +60,3 @@ export async function login(req, res) {
         return res.status(500).json({ message: 'An error occurred on the server' });
     }
 }
-

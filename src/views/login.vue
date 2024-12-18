@@ -46,9 +46,14 @@ export default {
     };
   },
   mounted() {
-
-    if (localStorage.getItem('token')) {
-      this.$router.push('/user');
+    const token = localStorage.getItem('token');
+    if (token) {
+      const role = localStorage.getItem('role');
+      if (role === 'admin') {
+        this.$router.push('/admin/dashboard');
+      } else {
+        this.$router.push('/user');
+      }
     }
   },
   methods: {
@@ -62,12 +67,29 @@ export default {
         });
 
         if (response.data && response.data.token) {
-          localStorage.setItem('token', response.data.token); 
+          const { token, role } = response.data;
 
-          window.location.reload();
+          localStorage.setItem('token', token);
+          localStorage.setItem('role', role); 
+
+          if (role === 'admin') {
+            this.$router.push('/admin/dashboard');
+          } else {
+            this.$router.push('/user');
+          }
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 400);
+
         }
       } catch (error) {
-        this.errorMessage = error.response ? error.response.data.message : 'An error occurred';
+        if (error.response && error.response.data.message) {
+          this.errorMessage = error.response.data.message;
+        } else {
+          this.errorMessage = 'An error occurred. Please try again.';
+        }
+        console.error(error); 
       } finally {
         this.isLoading = false;
       }
