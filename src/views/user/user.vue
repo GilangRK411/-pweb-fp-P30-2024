@@ -1,16 +1,7 @@
 <template>
   <div>
     <h1>Riwayat Tagihan</h1>
-    <div>
-      <label for="startDate">Tanggal Mulai:</label>
-      <input type="date" v-model="startDate" id="startDate" />
-    </div>
-    <div>
-      <label for="endDate">Tanggal Selesai:</label>
-      <input type="date" v-model="endDate" id="endDate" />
-    </div>
-    <button @click="fetchBillHistory">Tampilkan Riwayat</button>
-
+    
     <table v-if="billHistory.length">
       <thead>
         <tr>
@@ -42,10 +33,8 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      startDate: '',
-      endDate: '',
       billHistory: [],
-      userId: null,  
+      userId: null,
     };
   },
   created() {
@@ -54,31 +43,27 @@ export default {
   methods: {
     async fetchUserIdFromToken() {
       try {
-        const token = localStorage.getItem('token'); 
+        const token = localStorage.getItem('token');
         if (!token) {
           console.error('No token found');
           return;
         }
 
-        // Send the token to your session API for decoding
         const response = await axios.get('http://localhost:5000/api/session', {
           headers: {
-            token: token, // Pass the token as 'token' in headers
+            token: token,
           },
         });
 
-        console.log('Session response:', response.data);
-
         this.userId = response.data.userId;
-        console.log('User ID:', this.userId);  // Log the userId
-
+        if (this.userId) {
+          this.fetchBillHistory();
+        }
       } catch (error) {
         console.error('Error fetching userId from token:', error);
       }
     },
 
-
-    // Fetch bill history using the userId and date range
     async fetchBillHistory() {
       if (!this.userId) {
         console.error('User ID is missing. Make sure you are logged in.');
@@ -86,24 +71,10 @@ export default {
       }
 
       try {
-        // Prepare the params object
-        const params = {
-          userId: this.userId,  // Always include the userId
-        };
-
-        // Add the startDate and endDate only if they are not empty
-        if (this.startDate) {
-          params.startDate = this.startDate;
-        }
-        if (this.endDate) {
-          params.endDate = this.endDate;
-        }
-
-        // Make the request with the proper parameters and Authorization header
         const response = await axios.get('http://localhost:5000/rooms/bill-history', {
-          params,
+          params: { userId: this.userId },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the Bearer token
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from '../database/database.js';
 
 const { Schema, model } = mongoose;
 
@@ -19,6 +19,10 @@ const laporanFasilitasSchema = new Schema({
         type: String,
         enum: ['Diperbaiki', 'Sedang Diperbaiki', 'Belum Diperbaiki'],
         default: 'Belum Diperbaiki'
+    },
+    username: { // Add this field to store the username of the person making the report
+        type: String,
+        required: true
     }
 });
 
@@ -26,3 +30,4 @@ const laporanFasilitasSchema = new Schema({
 const LaporanFasilitas = model('LaporanFasilitas', laporanFasilitasSchema);
 
 export default LaporanFasilitas;
+

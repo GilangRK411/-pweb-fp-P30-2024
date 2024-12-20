@@ -128,18 +128,28 @@ export default {
       const additionalFeatures = this.selectedAdditionalFeatures[room._id] || [];
 
       const roomPrice = this.calculateRoomPrice(rentalPeriod);
+      
       const additionalFeaturesPrice = additionalFeatures.reduce((total, feature) => {
         return total + this.calculateAdditionalFeaturePrice(feature, room);
       }, 0);
+
+      const additionalFeaturesBreakdown = additionalFeatures.map((feature) => ({
+        feature: feature,
+        price: this.calculateAdditionalFeaturePrice(feature, room)
+      }));
 
       const totalPrice = roomPrice + additionalFeaturesPrice;
 
       const roomData = {
         roomId: room._id,
+        roomName: room.roomName,
         period: rentalPeriod,
+        roomPrice: roomPrice,
         additionalFeatures: additionalFeatures,
+        additionalFeaturesBreakdown: additionalFeaturesBreakdown,
         totalPrice: totalPrice
       };
+
       localStorage.setItem(room.roomName, JSON.stringify(roomData)); 
     },
 

@@ -8,6 +8,7 @@ import UserView from './views/user/user.vue';
 import UserSewa from './views/user/user.sewa.vue';
 import UserBayar from './views/user/user.bayar.vue';
 import LaporanFasilitas from './views/user/laporan.fasilitas.vue';
+import laporanPenghuni from './views/user/laporan.penghuni.vue';
 import AdminDashboard from './views/admin/admin.dashboard.vue';
 import axios from 'axios';
 
@@ -59,6 +60,12 @@ const routes = [
     path: '/laporan/fasilitas',
     name: 'laporanFasilitas',
     component: LaporanFasilitas,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/laporan/penghuni',
+    name: 'laporanPenghuni',
+    component: laporanPenghuni,
     meta: { requiresAuth: true },
   },
   {
