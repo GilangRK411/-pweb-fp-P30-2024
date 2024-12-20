@@ -5,6 +5,9 @@ import LoginPage from './views/login.vue';
 import RegisterPage from './views/register.vue';
 import RulesPage from './views/rules.vue';
 import UserView from './views/user/user.vue';
+import UserSewa from './views/user/user.sewa.vue';
+import UserBayar from './views/user/user.bayar.vue';
+import LaporanFasilitas from './views/user/laporan.fasilitas.vue';
 import AdminDashboard from './views/admin/admin.dashboard.vue';
 import axios from 'axios';
 
@@ -38,6 +41,24 @@ const routes = [
     path: '/user',
     name: 'user',
     component: UserView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/user/sewa',
+    name: 'sewa',
+    component: UserSewa,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/user/bayar',
+    name: 'bayar',
+    component: UserBayar,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/laporan/fasilitas',
+    name: 'laporanFasilitas',
+    component: LaporanFasilitas,
     meta: { requiresAuth: true },
   },
   {

@@ -5,10 +5,14 @@ import UserSession from '../models/user.usersession.model.js';
 dotenv.config();
 
 export async function authenticate(req, res, next) {
-  const token = req.headers['authorization']?.split(' ')[1]; 
-
-  if (!token) {
+  const authorizationHeader = req.headers['authorization'];
+  if (!authorizationHeader) {
     return res.status(403).json({ message: 'No token provided' });
+  }
+
+  const token = authorizationHeader.split(' ')[1]?.trim(); 
+  if (!token) {
+    return res.status(403).json({ message: 'Invalid token format' });
   }
 
   try {
@@ -23,13 +27,17 @@ export async function authenticate(req, res, next) {
     if (!session) {
       return res.status(401).json({ message: 'Invalid token or session expired' });
     }
-    if (new Date() > session.expires_at) {
+
+    const currentTime = new Date();
+    if (new Date(session.expires_at) < currentTime) {
       return res.status(401).json({ message: 'Token has expired' });
     }
 
     req.user = decoded;
+
     next();
   } catch (error) {
+    console.error('Authentication error:', error);
     return res.status(401).json({ message: 'Invalid or expired token' });
   }
 }
