@@ -10,6 +10,8 @@ import UserBayar from './views/user/user.bayar.vue';
 import LaporanFasilitas from './views/user/laporan.fasilitas.vue';
 import laporanPenghuni from './views/user/laporan.penghuni.vue';
 import AdminDashboard from './views/admin/admin.dashboard.vue';
+import AdminLaporanFasilitas from './views/admin/admin.laporan.fasilitas.vue';
+import AdminLaporanPenghuni from './views/admin/admin.laporan.penghuni.vue';
 import axios from 'axios';
 
 const routes = [
@@ -58,20 +60,32 @@ const routes = [
   },
   {
     path: '/laporan/fasilitas',
-    name: 'laporanFasilitas',
+    name: 'laporanfasilitas',
     component: LaporanFasilitas,
     meta: { requiresAuth: true },
   },
   {
     path: '/laporan/penghuni',
-    name: 'laporanPenghuni',
+    name: 'laporanpenghuni',
     component: laporanPenghuni,
     meta: { requiresAuth: true },
   },
   {
     path: '/admin/dashboard',
-    name: 'adminDashboard',
+    name: 'admindashboard',
     component: AdminDashboard,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: '/admin/laporan/fasilitas',
+    name: 'adminlaporanfasilitas',
+    component: AdminLaporanFasilitas,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: '/admin/laporan/penghuni',
+    name: 'adminlaporanpenghuni',
+    component: AdminLaporanPenghuni,
     meta: { requiresAuth: true, requiresAdmin: true },
   },
 ];

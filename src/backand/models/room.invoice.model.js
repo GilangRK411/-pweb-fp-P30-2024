@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from '../database/database.js';
 
 const invoiceHistorySchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

@@ -50,36 +50,39 @@ export default {
   },
   methods: {
     async submitLaporan() {
-      const laporanData = {
-        namaFasilitas: this.namaFasilitas,
-        deskripsiKerusakan: this.deskripsiKerusakan,
-        status: this.status
-      };
-
       try {
-        const response = await fetch('http://localhost:5000/api/fasilitas', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(laporanData)
-        });
+        const evidenceArray = this.newLaporan.details.evidence.split(',').map(item => item.trim());
+        const laporanData = {
+          ...this.newLaporan,
+          details: {
+            ...this.newLaporan.details,
+            evidence: evidenceArray
+          }
+        };
 
-        const data = await response.json();
-        
-        if (response.ok) {
-          this.laporans.push(data.laporan);
-          this.namaFasilitas = '';
-          this.deskripsiKerusakan = '';
-          this.status = 'Belum Diperbaiki';
-        } else {
-          console.error(data.message); 
-          alert(`Error: ${data.message}`);
-        }
+        await axios.post(
+          'http://localhost:5000/api/laporan',
+          laporanData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        alert('Laporan berhasil dikirim!');
+        this.newLaporan = {
+          namaPenghuni: '',
+          details: {
+            description: '',
+            evidence: []
+          },
+          adminNotes: ''
+        };
       } catch (error) {
         console.error('Error submitting laporan:', error);
-        alert('Terjadi kesalahan saat mengirim laporan');
+        alert('Gagal mengirim laporan.');
       }
     }
   },

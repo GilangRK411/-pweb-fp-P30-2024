@@ -1,27 +1,36 @@
 <template>
-  <div class="register-container">
-    <h2>Sign Up</h2>
-    <form @submit.prevent="handleRegister">
-      <div class="form-field">
-        <label for="username">Username:</label>
-        <input type="text" id="username" v-model="username" placeholder="Enter your username" required />
-      </div>
+  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="max-w-lg w-full p-8 bg-white rounded-lg shadow-lg">
+      <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Sign Up</h2>
 
-      <div class="form-field">
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="email" placeholder="Enter your email" required />
-      </div>
+      <form @submit.prevent="handleRegister">
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-semibold text-gray-700">Username:</label>
+          <input type="text" id="username" v-model="username" placeholder="Enter your username" required
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black" />
+        </div>
 
-      <div class="form-field">
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" placeholder="Enter your password" required />
-      </div>
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-semibold text-gray-700">Email:</label>
+          <input type="email" id="email" v-model="email" placeholder="Enter your email" required
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black" />
+        </div>
 
-      <button type="submit" :disabled="isSubmitting">Register</button>
-    </form>
+        <div class="mb-6">
+          <label for="password" class="block text-sm font-semibold text-gray-700">Password:</label>
+          <input type="password" id="password" v-model="password" placeholder="Enter your password" required
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black" />
+        </div>
 
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-    <p v-if="successMessage" class="success">{{ successMessage }}</p>
+        <button type="submit" :disabled="isSubmitting"
+          class="w-full p-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
+          Register
+        </button>
+      </form>
+
+      <p v-if="errorMessage" class="mt-4 text-center text-red-500 text-sm">{{ errorMessage }}</p>
+      <p v-if="successMessage" class="mt-4 text-center text-green-500 text-sm">{{ successMessage }}</p>
+    </div>
   </div>
 </template>
 
@@ -67,81 +76,5 @@ export default {
 </script>
 
 <style scoped>
-.register-container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  text-align: center;
-  color: #333;
-  font-family: 'Roboto', sans-serif;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.form-field {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 5px;
-  font-size: 14px;
-  color: #666;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #333;
-  background-color: #fff;
-  transition: all 0.3s ease;
-}
-
-input:focus {
-  border-color: #4CAF50;
-  outline: none;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.error {
-  color: red;
-  text-align: center;
-  font-size: 14px;
-}
-
-.success {
-  color: green;
-  text-align: center;
-  font-size: 14px;
-}
+/* No additional CSS required since all styling is handled by Tailwind */
 </style>

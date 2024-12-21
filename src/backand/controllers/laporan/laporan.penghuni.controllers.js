@@ -1,14 +1,13 @@
 import LaporanPenghuni from '../../models/laporan.penghuni.model.js';
 
-// GET: Retrieve all reports
-// export const getAllLaporan = async (req, res) => {
-//     try {
-//         const laporan = await LaporanPenghuni.find();
-//         res.status(200).json(laporan);
-//     } catch (error) {
-//         res.status(500).json({ message: 'Error fetching reports', error });
-//     }
-// };
+export const getAllLaporanPenghuni = async (req, res) => {
+    try {
+        const laporan = await LaporanPenghuni.find();
+        res.status(200).json(laporan);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching reports', error });
+    }
+};
 
 
 export const createLaporanPenghuni = async (req, res) => {

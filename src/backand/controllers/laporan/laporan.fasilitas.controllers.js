@@ -28,17 +28,16 @@ export async function createLaporanFasilitas (req, res) {
     }
 }
 
+export async function getLaporanFasilitas (req, res) {
+    try {
+        // Use the find method on the LaporanFasilitas model
+        const laporans = await LaporanFasilitas.find();
 
-// export async function getLaporan(req, res) {
-//     try {
-//         // Use the find method on the LaporanFasilitas model
-//         const laporans = await LaporanFasilitas.find();
-
-//         res.status(200).json(laporans);
-//     } catch (err) {
-//         res.status(500).json({
-//             message: "Terjadi kesalahan saat mengambil laporan.",
-//             error: err.message
-//         });
-//     }
-// }
+        res.status(200).json(laporans);
+    } catch (err) {
+        res.status(500).json({
+            message: "Terjadi kesalahan saat mengambil laporan.",
+            error: err.message
+        });
+    }
+}

@@ -10,4 +10,6 @@ const userSessionSchema = new Schema({
     login_status: { type: Boolean, default: true }
 });
 
-export default model('UserSession', userSessionSchema);
+const UserSession = mongoose.model('UserSession', userSessionSchema);
+
+export default UserSession;
