@@ -76,5 +76,4 @@ export default {
 </script>
 
 <style scoped>
-/* No additional CSS required since all styling is handled by Tailwind */
 </style>

@@ -1,44 +1,55 @@
 <template>
-  <div class="payment-container">
-    <h1>Payment</h1>
+  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="max-w-lg w-full p-8 bg-white rounded-lg shadow-lg">
+      <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Payment</h2>
 
-    <div v-if="rooms.length === 0" class="no-rooms-message">
-      No rooms selected.
-    </div>
-
-    <div v-else>
-      <div v-for="room in rooms" :key="room.roomId" class="room-summary">
-        <h2>{{ room.roomName }}</h2>
-        <p><strong>Rental Period:</strong> {{ room.period }} months</p>
-        <p><strong>Additional Features:</strong> {{ room.additionalFeatures.join(', ') || 'None' }}</p>
-        <p><strong>Total Price:</strong> {{ currency(room.totalPrice) }}</p>
+      <div v-if="rooms.length === 0" class="no-rooms-message">
+        No rooms selected.
       </div>
-    </div>
 
-    <h3>Payment Method</h3>
-    <div class="payment-method">
-      <label>
-        <input type="radio" value="QRIS" v-model="paymentMethod" />
-        QRIS
-      </label>
-      <label>
-        <input type="radio" value="Transfer" v-model="paymentMethod" />
-        Transfer
-      </label>
-    </div>
+      <div v-else>
+        <div v-for="room in rooms" :key="room.roomId" class="room-summary">
+          <h3 class="text-xl font-semibold text-black">{{ room.roomName }}</h3>
+          <p class="text-black"><strong>Rental Period:</strong> {{ room.period }} months</p>
+          <p class="text-black"><strong>Additional Features:</strong> {{ room.additionalFeatures.join(', ') || 'None' }}</p>
+          <p class="text-black"><strong>Total Price:</strong> {{ currency(room.totalPrice) }}</p>
+        </div>
+      </div>
 
-    <div v-if="paymentMethod === 'Transfer'" class="bank-details">
-      <label for="bankName">Bank Name:</label>
-      <input type="text" id="bankName" v-model="bankName" placeholder="Enter bank name" />
-    </div>
+      <h3 class="text-xl font-semibold mt-6 text-black">Payment Method</h3>
+      <div class="payment-method text-black">
+        <label>
+          <input type="radio" value="QRIS" v-model="paymentMethod" />
+          QRIS
+        </label>
+        <label>
+          <input type="radio" value="Transfer" v-model="paymentMethod" />
+          Transfer
+        </label>
+      </div>
 
-    <button
-      :disabled="!isPaymentValid || isSubmitting"
-      @click="submitPayment"
-    >
-      Submit Payment
-    </button>
-    <div v-if="isSubmitting" class="loading-message">Submitting...</div>
+      <div v-if="paymentMethod === 'Transfer'" class="bank-details mt-4 text-black">
+        <label for="bankName" class="font-semibold">Bank Name:</label>
+        <input
+          type="text"
+          id="bankName"
+          v-model="bankName"
+          placeholder="Enter bank name"
+          class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      <button
+        :disabled="!isPaymentValid || isSubmitting"
+        @click="submitPayment"
+        class="w-full p-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed mt-6"
+      >
+        <span v-if="isSubmitting">Submitting...</span>
+        <span v-else>Submit Payment</span>
+      </button>
+      
+      <div v-if="isSubmitting" class="loading-message text-center text-blue-500 mt-4">Submitting...</div>
+    </div>
   </div>
 </template>
 
@@ -193,7 +204,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .payment-container {

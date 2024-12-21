@@ -1,29 +1,40 @@
 <template>
-  <div>
-    <h1>Riwayat Tagihan</h1>
-    
-    <table v-if="billHistory.length">
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Jumlah Tagihan</th>
-          <th>Metode Pembayaran</th>
-          <th>Bank</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="bill in billHistory" :key="bill._id">
-          <td>{{ formatDate(bill.created_at) }}</td>
-          <td>{{ bill.total_bill }}</td>
-          <td>{{ bill.payment_method }}</td>
-          <td>{{ bill.bank_name || '-' }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="max-w-[40rem] w-full p-8 bg-white rounded-lg shadow-lg space-y-6">
+      <h1 class="text-3xl font-bold text-center text-blue-600">Riwayat Tagihan</h1>
 
-    <p v-else>Tidak ada riwayat tagihan</p>
+      <div v-if="billHistory.length > 0">
+        <table class="min-w-full table-auto border-collapse">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="px-4 py-2 text-left text-black font-medium">Tanggal</th>
+              <th class="px-4 py-2 text-left text-black font-medium">Jumlah Tagihan</th>
+              <th class="px-4 py-2 text-left text-black font-medium">Metode Pembayaran</th>
+              <th class="px-4 py-2 text-left text-black font-medium">Bank</th>
+              <th class="px-4 py-2 text-left text-black font-medium">Jatuh Tempo</th> 
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="bill in billHistory" :key="bill._id" class="border-t">
+              <td class="px-4 py-2 text-black">{{ formatDate(bill.created_at) }}</td>
+              <td class="px-4 py-2 text-black">{{ bill.total_bill }}</td>
+              <td class="px-4 py-2 text-black">{{ bill.payment_method }}</td>
+              <td class="px-4 py-2 text-black">{{ bill.bank_name || '-' }}</td>
+              <td class="px-4 py-2 text-black">{{ calculateDueDate(bill.created_at, bill.rent_periods) }}</td> 
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <button @click="navigateToDashboard">Ke Dashboard Penghuni Lain</button>
+      <p v-else class="text-center text-gray-500">Data kosong. Tidak ada riwayat tagihan.</p>
+
+      <button 
+        @click="navigateToSewa" 
+        class="w-full p-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition duration-300 mt-6"
+      >
+        Sewa Kos
+      </button>
+    </div>
   </div>
 </template>
 
@@ -79,18 +90,41 @@ export default {
         });
 
         this.billHistory = response.data;
+
+        if (this.billHistory.length === 0) {
+          console.log('No bills found');
+        }
       } catch (error) {
         console.error('Error fetching bill history:', error);
       }
     },
 
     formatDate(date) {
-      return new Date(date).toLocaleDateString();
+      const d = new Date(date);
+      const day = d.getDate().toString().padStart(2, '0');  
+      const month = (d.getMonth() + 1).toString().padStart(2, '0'); 
+      const year = d.getFullYear();
+
+      return `${day}/${month}/${year}`;
     },
 
-    navigateToDashboard() {
-      this.$router.push('/dashboard');
+    calculateDueDate(createdAt, rentPeriods) {
+      const createdDate = new Date(createdAt);
+      createdDate.setMonth(createdDate.getMonth() + rentPeriods); 
+
+      return this.formatDate(createdDate);
+    },
+
+    navigateToSewa() {
+      this.$router.push('/user/sewa');
     },
   },
 };
 </script>
+
+<style scoped>
+  table th, table td {
+    border-bottom-width: 1px;
+    border-color: #e5e7eb; 
+  }
+</style>
