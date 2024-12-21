@@ -1,7 +1,7 @@
 <template>
   <nav class="bg-blue-600 text-white p-4 fixed top-0 left-0 w-full z-50 shadow-lg">
     <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-white">Manajemen Kost</h1>
+      <h1 class="text-3xl font-bold text-white">The Kost</h1>
       <ul class="flex space-x-8">
         <li v-if="!isLoggedIn">
           <router-link to="/rules" class="text-white hover:text-blue-200 transition duration-300">Peraturan</router-link>

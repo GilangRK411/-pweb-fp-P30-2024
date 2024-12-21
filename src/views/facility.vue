@@ -5,17 +5,17 @@
 
       <!-- Fasilitas List -->
       <div class="space-y-6">
-        <div class="facility-item bg-gray-100 p-6 rounded-lg shadow-lg">
+        <div class="facility-item bg-gray-100 p-6 rounded-lg shadow-lg text-black">
           <h3 class="text-2xl font-semibold mb-4">WiFi</h3>
           <p>Internet gratis dengan kecepatan tinggi</p>
         </div>
 
-        <div class="facility-item bg-gray-100 p-6 rounded-lg shadow-lg">
+        <div class="facility-item bg-gray-100 p-6 rounded-lg shadow-lg text-black">
           <h3 class="text-2xl font-semibold mb-4">Laundry</h3>
           <p>Layanan laundry tersedia</p>
         </div>
 
-        <div class="facility-item bg-gray-100 p-6 rounded-lg shadow-lg">
+        <div class="facility-item bg-gray-100 p-6 rounded-lg shadow-lg text-black">
           <h3 class="text-2xl font-semibold mb-4">Parkir</h3>
           <p>Area parkir luas dan aman</p>
         </div>
