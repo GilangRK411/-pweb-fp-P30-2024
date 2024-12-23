@@ -19,17 +19,17 @@
           </thead>
           <tbody>
             <tr v-for="(laporan, index) in laporanFasilitas" :key="laporan._id">
-              <td class="border border-gray-300 p-3">{{ index + 1 }}</td>
-              <td class="border border-gray-300 p-3">{{ laporan.namaFasilitas }}</td>
-              <td class="border border-gray-300 p-3">{{ laporan.deskripsiKerusakan }}</td>
-              <td class="border border-gray-300 p-3">{{ new Date(laporan.tanggalLapor).toLocaleDateString() }}</td>
-              <td class="border border-gray-300 p-3">{{ laporan.status }}</td>
-              <td class="border border-gray-300 p-3">{{ laporan.username }}</td>
+              <td class="border border-gray-300 p-3 text-black">{{ index + 1 }}</td>
+              <td class="border border-gray-300 p-3 text-black">{{ laporan.namaFasilitas }}</td>
+              <td class="border border-gray-300 p-3 text-black">{{ laporan.deskripsiKerusakan }}</td>
+              <td class="border border-gray-300 p-3 text-black">{{ new Date(laporan.tanggalLapor).toLocaleDateString() }}</td>
+              <td class="border border-gray-300 p-3 text-black">{{ laporan.status }}</td>
+              <td class="border border-gray-300 p-3 text-black">{{ laporan.username }}</td>
             </tr>
           </tbody>
         </table>
 
-        <div v-if="laporanFasilitas.length === 0" class="text-center text-gray-500 font-semibold">
+        <div v-if="laporanFasilitas.length === 0" class="text-center  font-semibold text-black">
           Tidak ada laporan yang tersedia.
         </div>
       </div>

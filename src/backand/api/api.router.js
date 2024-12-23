@@ -20,7 +20,7 @@ router.post('/fasilitas', authenticate, createLaporanFasilitas);
 router.get('/fasilitas', authenticate, getLaporanFasilitas);
 
 // LAPORAN PENGHUNI
-router.post('/laporan', authenticate, createLaporanPenghuni);
-router.get('/laporan', authenticate, getAllLaporanPenghuni);
+router.post('/penghuni', authenticate, createLaporanPenghuni);
+router.get('/penghuni', authenticate, getAllLaporanPenghuni);
 
 export default router;

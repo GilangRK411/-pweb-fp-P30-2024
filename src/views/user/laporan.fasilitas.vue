@@ -43,61 +43,73 @@
           </button>
         </div>
       </form>
-
-      <!-- Display Submitted Reports -->
-      <h3 class="text-xl font-semibold text-center mt-8">Laporan yang Dikirim</h3>
-      <ul class="mt-4">
-        <li v-for="laporan in laporans" :key="laporan._id" class="mb-2">
-          <strong>{{ laporan.namaFasilitas }}</strong>: {{ laporan.deskripsiKerusakan }} (Status: {{ laporan.status }})
-        </li>
-      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
+  name: "AdminLaporanFasilitas",
   data() {
     return {
-      namaFasilitas: '',
-      deskripsiKerusakan: '',
-      status: 'Belum Diperbaiki',
-      laporans: [],
+      namaFasilitas: "",
+      deskripsiKerusakan: "",
+      status: "Belum Diperbaiki",
+      laporanFasilitas: [],
     };
+  },
+  async created() {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token tidak tersedia. Silakan login kembali.");
+      }
+
+      const response = await axios.get("http://localhost:5000/api/fasilitas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      this.laporanFasilitas = response.data;
+    } catch (error) {
+      console.error("Error fetching laporan fasilitas:", error.message);
+      alert("Gagal mengambil data laporan. Silakan coba lagi.");
+    }
   },
   methods: {
     async submitLaporan() {
       try {
-        const laporanData = {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("Token tidak tersedia. Silakan login kembali.");
+        }
+
+        const newLaporan = {
           namaFasilitas: this.namaFasilitas,
           deskripsiKerusakan: this.deskripsiKerusakan,
           status: this.status,
         };
 
-        await axios.post(
-          'http://localhost:5000/api/laporan',
-          laporanData,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          }
-        );
+        const response = await axios.post("http://localhost:5000/api/fasilitas", newLaporan, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        alert('Laporan berhasil dikirim!');
-        this.namaFasilitas = '';
-        this.deskripsiKerusakan = '';
-        this.status = 'Belum Diperbaiki';
+        this.laporanFasilitas.push(response.data);
+
+        this.namaFasilitas = "";
+        this.deskripsiKerusakan = "";
+        this.status = "Belum Diperbaiki";
+
+        alert("Laporan berhasil dikirim.");
       } catch (error) {
-        console.error('Error submitting laporan:', error);
-        alert('Gagal mengirim laporan.');
+        console.error("Error submitting laporan:", error.message);
+        alert("Gagal mengirim laporan. Silakan coba lagi.");
       }
     },
-  },
-  mounted() {
   },
 };
 </script>

@@ -17,10 +17,10 @@
           </thead>
           <tbody>
             <tr v-for="(laporan, index) in laporanList" :key="laporan._id">
-              <td class="border border-gray-300 p-3">{{ index + 1 }}</td>
-              <td class="border border-gray-300 p-3">{{ laporan.details.description }}</td>
-              <td class="border border-gray-300 p-3">{{ new Date(laporan.details.date).toLocaleDateString() }}</td>
-              <td class="border border-gray-300 p-3">
+              <td class="border border-gray-300 p-3 text-black">{{ index + 1 }}</td>
+              <td class="border border-gray-300 p-3 text-black">{{ laporan.details.description }}</td>
+              <td class="border border-gray-300 p-3 text-black">{{ new Date(laporan.details.date).toLocaleDateString() }}</td>
+              <td class="border border-gray-300 p-3 text-black">
                 <ul>
                   <li v-for="(bukti, idx) in laporan.details.evidence" :key="idx">
                     <a :href="bukti" target="_blank" class="text-blue-600 hover:underline">Lihat Bukti {{ idx + 1 }}</a>

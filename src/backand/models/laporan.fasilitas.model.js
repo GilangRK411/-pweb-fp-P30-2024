@@ -20,7 +20,7 @@ const laporanFasilitasSchema = new Schema({
         enum: ['Diperbaiki', 'Sedang Diperbaiki', 'Belum Diperbaiki'],
         default: 'Belum Diperbaiki'
     },
-    username: { // Add this field to store the username of the person making the report
+    username: { 
         type: String,
         required: true
     }

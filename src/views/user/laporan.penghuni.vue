@@ -8,25 +8,25 @@
         <div class="mb-4">
           <label for="namaPenghuni" class="block text-sm font-semibold text-gray-700">Nama Penghuni:</label>
           <input v-model="newLaporan.namaPenghuni" id="namaPenghuni" required
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black" />
         </div>
         
         <div class="mb-4">
           <label for="description" class="block text-sm font-semibold text-gray-700">Deskripsi:</label>
           <textarea v-model="newLaporan.details.description" id="description" required
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"></textarea>
         </div>
         
         <div class="mb-4">
           <label for="evidence" class="block text-sm font-semibold text-gray-700">Bukti (opsional):</label>
           <input v-model="newLaporan.details.evidence" id="evidence" placeholder="Pisahkan URL dengan koma"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black" />
         </div>
         
         <div class="mb-6">
           <label for="adminNotes" class="block text-sm font-semibold text-gray-700">Catatan Admin (opsional):</label>
           <textarea v-model="newLaporan.adminNotes" id="adminNotes"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"></textarea>
         </div>
         
         <button type="submit"
@@ -58,7 +58,12 @@ export default {
   methods: {
     async submitLaporan() {
       try {
-        const evidenceArray = this.newLaporan.details.evidence.split(',').map(item => item.trim());
+        const evidenceInput = Array.isArray(this.newLaporan.details.evidence)
+          ? this.newLaporan.details.evidence.join(',') 
+          : this.newLaporan.details.evidence; 
+
+        const evidenceArray = evidenceInput.split(',').map(item => item.trim());
+
         const laporanData = {
           ...this.newLaporan,
           details: {
@@ -66,8 +71,17 @@ export default {
             evidence: evidenceArray
           }
         };
-        await axios.post('http://localhost:5000/api/laporan', laporanData);
+
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        };
+
+        await axios.post('http://localhost:5000/api/penghuni', laporanData, config);
         alert('Laporan berhasil dikirim!');
+
         this.newLaporan = {
           namaPenghuni: '',
           details: {
@@ -80,7 +94,8 @@ export default {
         console.error('Error submitting laporan:', error);
         alert('Gagal mengirim laporan.');
       }
-    }
+    },
+
   }
 };
 </script>
